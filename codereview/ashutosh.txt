@@ -1,0 +1,11 @@
+At times functionality is not tested
+
+dev
+staging
+prod -> store
+
+android
+ios
+
+firebase
+testflight

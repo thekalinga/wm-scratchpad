@@ -1,0 +1,70 @@
+If a deposit schedule is already active
+  For new users
+    As soon as User's DL get approved, they should automatically get credits (full month one or pro-rata?)
+      Full month one
+  For existing users
+    On a schedule basis.
+If a deposit schedule is newly introduced
+  For existing users
+    Their account need to get credited on
+
+
+
+If I change schedule, how will we deal with the case
+
+Payment Methods
+  Budget Balance
+  Card (Stripe)
+
+For every user
+
+Municipality
+  Budget Credit Schedule
+    Added
+    Updated
+
+User
+  Budget Credit
+    Deposited
+    Truncated
+    Spent
+    Adjusted
+
+
+
+Overflow Credit Truncated
+
+
+User
+  Link the card details with
+
+City Employee
+  Stop & Force stop - Amount automatic deduction
+
+
+Locking with Quartz scheduler
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

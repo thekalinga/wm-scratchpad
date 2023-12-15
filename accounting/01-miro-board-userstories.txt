@@ -1,0 +1,193 @@
+Payments & Budgets
+  Sharable Budget management
+  Budget Deposit Plan management
+  Onboard
+  View & Edit
+Vehicle
+  Vehicle model management
+  Vehicle management
+Trip flow changes
+  Start flow changes
+  Stop flow changes
+    Payment capture
+
+
+
+
+
+Accounting SVC
+Integrate with PSP (API Integration)
+Budget handling (Budget handling MobMan)
+Price versioning and historization
+Create/Display invoice (Invoice generation, storage and presentation)
+Trip - Price overview and mandatory Payment integration in mobile_app
+
+
+
+
+As a MSP (for now Vehicle Type = Vehicle Model, but backend will deal with Vehicle Models & Vehicles)
+  Define 1/more Vehicle models with each belonging to vehicle type
+  Define 1/more Vehicle Fee Schedule
+    Consisting of Fee Schedule mutually exclusive vehicle models
+  Vehicle Fleet
+    Onboard Vehicle belong to a specific Vehicle Model
+    Per vehicle
+      View trips made
+      Refunds issued
+      Download invoice for each successful trip
+    Aggregated across vehicles
+      All successful transactions (only details relevant to them i.e no user information etc)
+      Refunds
+      Download invoice for each successful trip
+
+As a City Employee
+  Define Budget deposit Plan that consists of multiple Budget deposit Plan Segments
+    Budget deposit Plan Segment consists of
+      Amount of wallet balance that can be deposited along with expiration period
+      When can it be deposited (1st time deposit time + frequency of deposits and the time of deposit)
+      Wallet balance spend restrictions (0 restrictions => can be spent on any vehicle & any amount)
+        Vehicle restriction
+          0/more MSP + vehicle models + type combinations
+        Amount restriction
+          Per trip spend restriction
+  (NOTE: All Budget deposit Plan schedules aggregated should not result in overlapping vehicle models i.e. they have to be mutually exclusive. This is to avoid ordering these plan schedules etc when trying to find amount for a trip)
+  Link & Unlink Budget sharing groups from Budget deposit plan.
+
+As a City Employee/Wikimove user
+  View User
+    Balance (Temporarily Locked & rest)
+      Including negative balance
+    Budget sharing groups they are part of
+    Budget deposit plan they are part of
+    Transactions
+      Scheduled Deposits along with expiration
+      Adhoc Deposit adjustments along with expiration (god mode - BAD)
+      Refunds (detailing both real money & wallet balance refunded)
+      Trips
+        Successful: Includes details about amount withdrawn from wallet & paid using stripe
+        Pending/In progress: Includes details about amount locked from wallet & to be paid using stripe
+        Failed/Cancelled/Abandoned: Includes details about amount locked & unlocked from wallet & amount attempted using stripe
+      Expired wallet balance
+    Refunds
+      Capture the details as to what happened with the specific refund request (capture its lifecycle)
+    Trips
+      Transactions
+        In progress
+        Failed
+        Succeeded
+
+As a Mobile App User
+  View
+    Balance
+      Available Budget & Valid payment method exists?
+      Amount they owe (as their card expired, etc.) incase of negative balance during force stop/stop flows
+      Deposit plan thats applicable to them
+    Payment methods
+  View transaction history/statement (all credits/deposit & debits/withdrawals)
+    Balance deposit (and group they are part of)
+      Along with expiration details
+    Payment towards trips
+    Refunds
+    Manual adjustments
+  Trip
+    View price sheet for vehicle along with usable balance & total balance
+    Link payment method
+    Pay for trip
+      Using just wallet balance
+      Using just Stripe payment method
+      Using wallet balance + Stripe payment method
+    Retry failed payment (might/might not be attempted immediately)
+    Download & Email invoice
+  Pay amount owed (In-App amount recovery)
+    On startup
+    On login
+    At end of trip (unpaid trip exists)
+    On trip start (if user was already in app & had negative balance)
+  Joining & Leaving of Budget Sharing Groups
+    As Manager
+      Invite other member to group
+      Remove member from group
+      Join
+        Accept invitation by scanning QR code
+          Group funded?
+            Not allowed. Inform them that they cannot join another group while being manager of a funded budget sharing group.
+          Not funded?
+            Show a warning that everyone will be kicked out of their private group. Want to proceed?
+    As non-Manager
+      Join
+        Accept invitation by scanning QR code
+          Not part of any other group (except self-group)?
+            Automatic enrollment into the group. No warning screens.
+          Part of any other group?
+            Warning informing the implications
+              Proceed after warning => Joined/Enrolled?
+              Abandon enrollment process after warning => No changes to group membership.
+      Leave a group
+      [Notifications about being removed from group]
+
+Account service
+  Look up
+    Budget sharing group wallet balance
+      Locked amount (due to ongoing tx being in progress) & Remaining balance
+      Amount owned (real money)
+      Active budget plans (multiple budget plans for user?)
+    User's Tx Account history
+    Vehicle activation quotation based on vehicle & user
+  Stripe
+    Link app user to connected account (1 for each city + msp combo)
+    Verify the existence of linked payment method
+      Integrate flow with webhooks
+    Front channel(on session) payment capture
+      PaymentIntent on backend + Payment capture on Mobile app
+      Integrate flow with webhooks
+    Back channel (off session) payment capture
+  Handle transactions
+    Happy path
+      Locking wallet balance at payment start
+        Unlocking wallet balance if payment is cancelled/lock in period expires i.e timeouts/any failure happens - expected/unexpected
+        Withdrawing wallet balance if payment is successful
+          Retries & Idempotency
+    Handle negative balance scenarios
+      Both front channel failures & Back channel (Force stop) failures
+    Misc
+      Versioning, Audibility, Idempotency, ...
+  Invoices
+    Generate invoice for a trip
+      For Mobile App user
+      For MSP
+      For Wikimove user
+    Store invoices & expose them externally using BLOB/some other storage
+
+Proof of Concept
+  Budget Deposit Scheduling (in Accounting Service)
+  Stripe integration: Happy & unhappy paths
+  Doing it all with Event Storming (DDD) + Change Data Capture (CDC)
+
+
+***
+
+Ground rules
+  If your [private] group has other members, you cant join any other group
+  A user cannot be part of multiple BSGs
+
+No uniqueness constraint on mobile number in User service.
+No budget display on vehicles that are displayed on the map by default. Only show vehicle activation quotation (incl budget) when user tries activating vehicles.
+
+1 User -> 1 Budget Sharing Group (Funded)
+Multiple Budget Sharing Groups in a single Budget Deposit Plan supported
+Anyone has negative balance, the budget from Budget Sharing Groups cannot be used by anyone who is part of this budget sharing group
+  [All members of the group are prohibited from joining/leaving the group ]
+
+Transfer the amount from BSG to Trip account as soon as user clicks on end trip (if all other checks are done). May be adjust the a/c balance appropriately (-ve) till user pays for it
+
+Onboard user via SetupIntent in Stripe
+Create placeholder for payment via PaymentIntent in Stripe
+Pay for the Budget amount immediately & withdraw the amount
+
+We need to ensure accounting service is firewalled at k8s level to talk to only stripe.com & every other domain is blocked.
+
+Create flow charts for
+  Points of payment
+    Both during payout
+
+

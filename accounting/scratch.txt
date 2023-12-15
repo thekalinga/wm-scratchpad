@@ -1,0 +1,60 @@
+start:
+(Start)
+
+User scanned/entered QR code of a vehicle to start trip;
+
+dl_validated_qn:
+if (Driving License validated?) {
+  // Trip Start call (Enquiry only mode): Mode in which Mobile app would ask server if they were to issue the start trip call, would the call succeed?
+  // When this call is made, server would not attempt to start trip rather give all the details mobile needs to
+  // if the start can be started without any impediments that has relevance to both Vehicle & User. Else, it rejects the call
+  // with errors such as Payment Method missing, Account Balance negative, Someone else is using the vehicle, etc
+  Make call to backend to start trip (enquiry only);
+  if (Received error?) {
+    if (Payment Method missing?) {
+      Show prompt to Add a valid Payment method;
+      if (Payment Method Added) {
+        loop dl_validated_qn;
+      }
+    } else if (Account Balance negative?) {
+      show_amount_due_page:
+      Show error page with amount due & allow them to change Payment method on Mobile;
+      Make a call to server to capture amount due from customer account;
+      if (Amount capture call success?) {
+        loop dl_validated_qn;
+      } else {
+        loop show_amount_due_page;
+      }
+    } else if (Someone else is using the vehicle?) {
+      Inform user they need to select another vehicle & keep them on same screen;
+    } else {
+      Show a generic error prompt while keeping previous screen intact;
+    }
+  } else {
+    Show start trip page with following details
+      1. Charges for using this vehicle
+        a. Activation fee.
+        b. Trip charges during active period.
+        c. Trip charges during paused period.
+      2. Free budget balance they can use for this vehicle (along with Total remaining balance);
+    if (User clicked on start) {
+      // Trip Start call (non-enquiry only mode i.e Start): This does same checks as enquiry mode, but it attempts to start trip once all checks pass.
+      Make call to start the trip (no enquiry);
+      if (Start success) {
+        Transition to next screen;
+      } else {
+        if (Unexpected/temporary error) {
+          Show temporary error message & stay on same screen for user to retry;
+        } else {
+          loop dl_validated_qn;
+        }
+      }
+    }
+  }
+} else {
+  Show Driving License prompt;
+  loop end;
+}
+
+end:
+End

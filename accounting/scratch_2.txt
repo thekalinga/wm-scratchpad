@@ -1,0 +1,3 @@
+Verify if we can check Payment method existence check can be performed on the backend.
+Can we use webhooks for verifying payment method is added or not while the user is doing it.
+

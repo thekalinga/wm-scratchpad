@@ -1,0 +1,24 @@
+Wikimove
+  Aggregated view of all vehicles, vehicle models
+City
+  Aggregated view
+Mobility Service Provider
+  Vehicle models (not part of the scope for now in MM frontend)
+  Vehicles (Fleet)
+  Budget
+    Deposit Schedule
+      Shared
+      ???
+    Usage Restrictions (10hrs)
+      Per trip
+        eBike 2hr
+        eMoped 1hr
+
+Vehicle type
+  eMoped/eBike
+Vehicle model (as of now 1 Vehicle type = 1 Vehicle model)
+  (linked to Vehicle type)
+  CO2
+  Pricing Plan
+Vehicle
+  (linked to Vehicle model)

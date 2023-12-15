@@ -1,0 +1,3 @@
+1. Always uses `?` & `??` for no good reason.
+2. Copy-Paste reuse rather tha factoring it out.
+3. Names doesnt make any intuitive sense.

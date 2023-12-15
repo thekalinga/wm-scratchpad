@@ -1,0 +1,19 @@
+{
+  "id": 1,
+  "version": 1,
+  "schemaVersion": 1,
+  "frequency": {
+    "unit": "MONTHS",
+    "value": 1
+  },
+  "credit": {
+    "type": "EXPIRING",
+    "unit": "HOURS", // Can be EUR too
+    "amount": 10,
+    "amountMultiplier": 1
+  },
+  "expirationSchedule": {
+    "unit": "MONTHS",
+    "value": 1
+  }
+}

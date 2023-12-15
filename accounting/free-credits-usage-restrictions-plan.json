@@ -1,0 +1,11 @@
+{
+  "mspId": 1,
+  "vehicleModel": 1,
+  "constraints": [
+    {
+      "type": "LIMIT_PER_TRIP",
+      "fundSource": "FREE_CREDITS",
+      "value": 10
+    }
+  ]
+}

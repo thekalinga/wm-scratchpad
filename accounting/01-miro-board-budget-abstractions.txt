@@ -1,0 +1,92 @@
+City
+  Budget Plan (1..*) Budget Sharing Group
+  Budget Plan (1..*) Budget Plan Segment
+  Budget Plan Segment (1..*) Spend Constraint
+  Budget Sharing Group (1..*)  Mobile App User
+    Mobile App User cannot be part of more than 1 User Budget Group
+  Budget Plan Segment (MSP + vehicle model combo can only be part of at most 1 spend constraint in a budget)
+    When
+      Frequency (at what rate)
+        MONTHLY[/WEEKLY/CUSTOM DURATION/ONE_TIME_ONLY]
+      Time (when to deposit)
+        [1st time deposit
+          Start time (Day of Year + Time)]
+        Subsequent deposits
+          DAY OF MONTH(1-28)[/DAY OF WEEK/< = 1st time only>/DAY OF YEAR(1-365)] + Time
+    Amount
+      Validity (Expiration)
+    Spend Constraints
+      [Vehicle
+        MSPs
+        Vehicle Types - scooter
+        Vehicle Models
+        Combination of these]
+      Trip
+        Per trip
+
+Fee/Pricing Schedule
+  MSP
+  Vehicle Model(s)
+
+Fleet (1..*) Vehicle
+Vehicle (*...1) Vehicle Model
+Vehicle Model (*..1) Vehicle Type
+Vehicle Type
+
+I have a fleet & price depends on model
+
+
+Plan 1
+
+EBIKE-OLD (EB01)
+
+Plan 2
+
+EBIKE-NEW (EB02)
+EMOPED (EM01)
+
+
+10hrs
+
+City MSP + EB
+
+EBIKE-OLD (EB01)
+EBIKE-NEW (EB02)
+
+2hrs
+
+City MSP + EM
+
+EMOPED (EM01)
+
+3hrs
+
+City MSP + EB01
+
+City
+
+Group vehicles
+  Budget Plan Segment -- shared budget defined for a subset of MSP + Vehicle type + Vehicle model combination
+  Budget Plan (1..*) Budget Plan Segment
+
+
+App User
+Budget Sharing Group (1..*) App User
+
+
+6hrs
+  city msp + ebike
+4hrs
+  zeus + escooter
+
+10hrs
+  city msp + ebike
+  zeus + escooter
+
+10hrs
+  city msp
+  zeus + escooter
+
+10hrs
+  city msp + ebike - 6hrs
+  zeus + escooter - 6hrs

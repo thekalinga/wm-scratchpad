@@ -1,0 +1,4 @@
+No uniqueness constraint on mobile number
+
+1 -> LP11? -> QR11
+2 -> LP22? -> QR22

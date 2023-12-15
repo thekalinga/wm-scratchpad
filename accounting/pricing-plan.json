@@ -1,0 +1,56 @@
+{
+  "id": 1,
+  "version": 1,
+  "schemaVersion": 1,
+  "hasPrecedenceRelativeTo": 1,
+  "applicableIf": [
+    {
+      "type": "AND",
+      "conditions": [
+        {
+          "type": "MODEL",
+          "vehicleModelId": 1
+        },
+        {
+          "type": "DISTANCE_FROM",
+          "value": 12,
+          "unit": "KMS",
+          "from": {
+            "lat": 12.4,
+            "lng": 13.4
+          }
+        }
+      ]
+    }
+  ],
+  "currency": "EUR",
+  "amountMultiplier": 100,
+  "feeStructure": [
+    {
+      "type": "USAGE_CHARGES",
+      "subType": "ACTIVATION_FEE",
+      "costType": "FIXED_FEE",
+      "value": 100
+    },
+    {
+      "type": "USAGE_CHARGES",
+      "subType": "ACTIVE_DURATION",
+      "costType": "PER_MINUTE_RATE",
+      "value": 20
+    },
+    {
+      "amount": 100,
+      "type": "USAGE_CHARGES",
+      "subType": "PAUSED_DURATION",
+      "costType": "PER_MINUTE_RATE",
+      "value": 10
+    }
+  ],
+  "carbonFootprintBreakdown": [
+    {
+      "pollutantType": "CO2",
+      "measure": "GRAMS_PER_KM",
+      "value": 100
+    }
+  ]
+}

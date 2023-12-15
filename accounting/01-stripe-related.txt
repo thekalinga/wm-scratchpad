@@ -1,0 +1,126 @@
+3D-Secure & Strong Customer Authentication of Eruope regulations that require additional on-session/user inputs to avoid chargebacks.
+
+Stripe integration for each customer.
+Stripe Webhook integration on backend for payment confirmation.
+Stripe Webhook integration for failed/timedout/expired transactions.
+
+Is this a requirement?
+--
+
+Need to support Apple & Google pay
+  Stripe Connect Standard/Express
+
+When:
+  Public MSP: Instant payout?
+  Private provider MSP: Delayed payout?
+
+Where:
+  To Bank account/Stripe account?
+
+How do we deal with public transport in future?
+
+Reservations against Wallet balance + expiring this, handling all failure scenarios (incl Timeouts, Rejections, ...) incl releasing the reserved amount back.
+Retry payment multiple times for same trip.
+Handling on-session payments thru front channel.
+Handling off-session payments thru back channel.
+Refunds/Chargebacks & dealing with distributed tx between wallet balance & PSP.
+  Dispute resolution process.
+Handling credit expirations.
+Dealing with webhooks.
+Invoices
+  For User
+  For Wikimove
+  For MSP
+
+Payment methods
+  How do we decide which card to charge. Is there a default payment method thats set? How about delegated payment methods like Apple?
+  Can a backend process deduct amount without user interaction?
+  If a card gets invalidated/insufficient funds, how will we know about it? Any webhooks?
+
+Create a flowchart for everyone to understand all flows
+  Mobile side
+    Happy
+    Unhappy (i.e invalid card/insufficient balance --- synchronous, negative balance --- asynchronous, ...)
+  Mobility manager (force stop)
+    Invalid card linked/expired/card deleted, etc i.e Negative balance scenarios
+
+As of now, as part of the trip, we will need handle the following scenarios
+
+1. Start flow can be rejected
+
+
+Points to note
+https://maddevs.io/blog/integration-of-stripe-connect-into-your-project/
+
+Use 3D-secure (liability transfer).
+Prefer on-session payments rather than off-session (backend) payments as people ask for refund & can be used for fraud.
+Always use webhooks (even for payments)
+  Definitely for invalidated accounts, expired cards, fraud etc
+Platform account vs Connected account
+
+
+Types of Keys
+  Publishable Key (Mobileapp, Webapp) - can be published
+    pk_...
+    test keys
+      pk_test_...
+    live keys
+      pk_live_...
+  Secret key - For backend flows must be kept secret
+    sk_...
+    test keys
+      sk_test_...
+    live keys
+      sk_live_...
+  Restricted key - Limited access (preferred) must be kept secret
+    rk_...
+    test keys
+      rk_test_...
+    live keys
+      rk_live_...
+  Webhooks signing secrets - For verifying the payload is indeed from Stripe
+    whsec_...
+    Live & test keys
+      whsec_...
+
+Connect
+  Platform collecting payments on behalf of other vendors (like shopify, ...)
+  API key (for platform account) & Connected account id (for vendor linked to our account)
+  Customers can be linked to platform account/platform+connected account
+
+Can we use opensource Flutter SDK for our integration?
+
+Need to set preferred locales for each customer
+
+
+***********************************
+
+
+Mobile side
+
+Client integration
+---
+
+In general it is sth like:
+
+* Client app creates order on the server
+* Server creates an payment intent on Stripe and provides the paymentIntentId and optional a customer id + ephemeral key (so you can save the cards).
+* Customer fills in payment details on the client and confirms the payment.
+* Server receives a callback from Stripe whether or not payment is succeeded
+* Server informs the client payment is success
+
+PCI Compliance
+---
+
+Regarding PCI compliance: you always need to make sure your organisation is PCI compliant (see the Stripe dashboard). The advantage of our library is that we use native Stripe components and do not process anything on the Flutter side. This allows you to comply to the less strict PCI compliance regulations (just fill in a self-assessment).
+
+Source: https://github.com/flutter-stripe/flutter_stripe/issues/504#issuecomment-1002963552
+
+Customisation
+---
+
+Use paymentsheet rather than cardformfield
+
+See
+
+https://github.com/flutter-stripe/flutter_stripe/issues/1366

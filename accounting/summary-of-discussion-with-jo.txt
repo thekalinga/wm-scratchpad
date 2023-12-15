@@ -1,0 +1,59 @@
+Mobility manager
+  MSP vehicle type pricing plan
+  Budget deposit plan
+    Municipality
+  Budget spend plan
+    MSP + Vehicle type + Municipality
+  Invoice metadata
+    VAT
+  Support user
+    Wikimove support view of invoice
+    MSP support view of invoice
+
+Account configuration of MSP
+
+Ops service will make a note of when trip stop is requested
+  Each trip being linked to
+    Budget spend plan version + Vehicle pricing plan version
+    Invoice call being independent of actual capture flow
+  Start flow
+    If card is not linked, reject request
+    If account balance is negative, force the user to enter a new card details
+
+Accounting service
+  Rules
+    No double spend
+    Dont forget to record if already spent
+
+Account
+  Balance
+    Amount temporarily blocked (while an ongoing tx exists) &
+  Tx history
+
+Refunds
+  Manual
+Invoice
+  Tax
+
+Stripe
+  Check how to link SDK & APIs to link a user account
+
+
+----
+
+Invoice metadata
+
+Full Name and Address of the Supplier: The supplier’s complete contact information.
+Full Name and Address of the Customer: The customer’s complete contact information.
+Supplier’s Tax Number or VAT ID: The supplier’s tax identification or VAT identification number.
+Invoice Date: The date when the invoice is issued.
+Unique Invoice Number: A sequential number that uniquely identifies the invoice.
+Description of Goods or Services: A clear description of the products or services provided.
+Date of Supply or Services: The date when the goods were supplied or services rendered.
+Net Amount for Goods or Services: The price of the goods or services excluding VAT.
+VAT Rate and Amount: The VAT rate (19%) applied and the total amount of VAT.
+Total Gross Amount: The total invoice amount including VAT.
+Payment Terms and Conditions: Details of the payment deadline, payment methods, and any other conditions.
+Optional Reference Number: Any customer reference number or order number, if applicable.
+Usually, you have the bank account of the supplier on the invoice as well.
+the invoice number needs to be sequential! we will receive specifications from bamberg for the general form of the invoice number
